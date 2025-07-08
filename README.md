@@ -1,18 +1,17 @@
-# SQL---Retail-Sales-Analysis-Project
-
+SQL — Retail Sales Analysis Project
 🧠 Objective
-Analyze retail sales data to uncover insights, clean messy records, and solve practical business questions using SQL.
+Analyze retail sales data to uncover insights, clean messy records, and solve practical business questions using SQL. This project demonstrates foundational SQL skills essential for aspiring data analysts.
 
 🗃️ Dataset Overview
-The dataset includes the following fields:
+The dataset contains detailed information on retail transactions with the following columns:
 
-transactions_id: Unique ID of each sale
+transactions_id: Unique identifier for each transaction
 
 sale_date: Date of the transaction
 
-sale_time: Time of sale
+sale_time: Time the sale occurred
 
-customer_id: Unique customer ID
+customer_id: Unique identifier for each customer
 
 gender: Gender of the customer
 
@@ -20,159 +19,73 @@ age: Age of the customer
 
 category: Product category (e.g., Clothing, Beauty)
 
-quantity: Quantity sold
+quantity: Number of items sold
 
-price_per_unit: Unit price
+price_per_unit: Price per individual unit
 
 cogs: Cost of goods sold
 
-total_sale: Total amount of the sale
+total_sale: Total sale amount per transaction
 
+🔍 Data Exploration & Cleaning
+✅ Record Checks
+Counted total transactions in the dataset
 
-🔎 Data Exploration & Cleaning
+Identified the number of unique customers
 
+Listed all unique product categories
 
-🧮 Record and Category Checks
+🧹 Null Value Handling
+Identified and removed records with missing values in essential fields including sale date, customer ID, category, and price details
 
-SELECT COUNT(*) FROM retail_sales;
-SELECT COUNT(DISTINCT customer_id) FROM retail_sales;
-SELECT DISTINCT category FROM retail_sales;
+Ensured the cleaned dataset is complete for accurate analysis
 
-🧹 Null Value Removal
+📊 Business Analysis
+The project addresses the following real-world business questions:
 
-SELECT * FROM retail_sales
-WHERE sale_date IS NULL OR sale_time IS NULL OR customer_id IS NULL OR 
-      gender IS NULL OR age IS NULL OR category IS NULL OR 
-      quantity IS NULL OR price_per_unit IS NULL OR cogs IS NULL;
+Daily Sales: Retrieved all transactions made on a specific date
 
-DELETE FROM retail_sales
-WHERE sale_date IS NULL OR sale_time IS NULL OR customer_id IS NULL OR 
-      gender IS NULL OR age IS NULL OR category IS NULL OR 
-      quantity IS NULL OR price_per_unit IS NULL OR cogs IS NULL;
+Category Performance: Filtered transactions where customers purchased more than 4 items in the "Clothing" category during November 2022
 
-      
-📊 Business Analysis Queries
+Sales by Category: Calculated the total and number of sales for each product category
 
+Customer Demographics: Found the average age of customers purchasing "Beauty" products
 
-1. Sales on a Specific Date
+High-Value Transactions: Identified all sales where the total value exceeded $1,000
 
-SELECT * FROM retail_sales
-WHERE sale_date = '2022-11-05';
+Gender-Based Transactions: Analyzed the number of transactions by gender within each category
 
+Monthly Trends: Determined the highest average sales month for each year using ranking techniques
 
-2. Clothing Sales with Quantity ≥ 4 (Nov 2022)
+Top Customers: Ranked the top 5 customers by their total spending
 
-SELECT * FROM retail_sales
-WHERE category = 'Clothing'
-  AND TO_CHAR(sale_date, 'YYYY-MM') = '2022-11'
-  AND quantity >= 4;
+Unique Customer Count: Measured the number of unique customers per product category
 
-  
-3. Total Sales by Category
-SELECT category, SUM(total_sale) AS net_sale, COUNT(*) AS total_orders
-FROM retail_sales
-GROUP BY category;
-
-
-5. Average Age (Beauty Category)
-SELECT ROUND(AVG(age), 2) AS avg_age
-FROM retail_sales
-WHERE category = 'Beauty';
-
-
-7. High-Value Transactions (> $1000)
-SELECT * FROM retail_sales
-WHERE total_sale > 1000;
-
-
-9. Transactions by Gender & Category
-
-SELECT category, gender, COUNT(*) AS total_trans
-FROM retail_sales
-GROUP BY category, gender
-ORDER BY category;
-
-
-10. Best-Selling Month Each Year
-
-SELECT year, month, avg_sale
-FROM (
-  SELECT 
-    EXTRACT(YEAR FROM sale_date) AS year,
-    EXTRACT(MONTH FROM sale_date) AS month,
-    AVG(total_sale) AS avg_sale,
-    RANK() OVER(PARTITION BY EXTRACT(YEAR FROM sale_date) 
-                ORDER BY AVG(total_sale) DESC) AS rank
-  FROM retail_sales
-  GROUP BY 1, 2
-) t
-WHERE rank = 1;
-
-
-11. Top 5 Customers by Total Sales
-
-SELECT customer_id, SUM(total_sale) AS total_sales
-FROM retail_sales
-GROUP BY customer_id
-ORDER BY total_sales DESC
-LIMIT 5;
-
-
-12. Unique Customers per Category
-
-SELECT category, COUNT(DISTINCT customer_id) AS cnt_unique_cs
-FROM retail_sales
-GROUP BY category;
-
-
-13. Shift-Based Order Count
-WITH hourly_sale AS (
-  SELECT *,
-    CASE
-      WHEN EXTRACT(HOUR FROM sale_time) < 12 THEN 'Morning'
-      WHEN EXTRACT(HOUR FROM sale_time) BETWEEN 12 AND 17 THEN 'Afternoon'
-      ELSE 'Evening'
-    END AS shift
-  FROM retail_sales
-)
-SELECT shift, COUNT(*) AS total_orders
-FROM hourly_sale
-GROUP BY shift;
-
-
+Sales by Shift: Grouped sales into Morning, Afternoon, and Evening based on sale time to analyze customer behavior across shifts
 
 📈 Key Findings
-Customer Demographics: Customers span a wide age range, and the gender split is fairly balanced.
+Customer Demographics: A broad age range of customers shop across various categories, with a fairly even gender distribution
 
-Sales Trends: Clear monthly patterns reveal seasonal peaks.
+Sales Trends: There are clear monthly peaks indicating seasonal demand patterns
 
-Premium Transactions: Several transactions exceeded $1,000 in value.
+High-Value Purchases: Several sales surpass the $1,000 mark, pointing to premium transactions
 
-Top Customers: A small group of customers account for a large portion of revenue.
+Top-Spending Customers: A small subset of customers contributes to a significant share of revenue
 
-Popular Categories: Clothing and Beauty emerged as high-performing categories.
+Category Insights: Clothing and Beauty emerged as top-selling product categories
 
-Peak Hours: Most sales occur in the afternoon shift.
+Time-Based Insights: Most transactions occurred during the afternoon shift
 
-📄 Reports
-Sales Summary: Total revenue, top-performing categories, and high-volume customers.
+📄 Reports Generated
+Sales Summary: Overview of total sales, customer distribution, and category performance
 
-Trend Analysis: Seasonal trends and shift-based behavior.
+Trend Analysis: Identified peak sales months and shifts
 
-Customer Insights: Repeat buyers, demographic trends, and loyalty opportunities.
+Customer Insights: Recognized top buyers and tracked unique customers per category
 
 ✅ Conclusion
-This beginner-friendly SQL project offers hands-on experience in:
-
-Database creation
-
-Data cleaning
-
-Exploratory analysis
-
-Business decision-making through queries
-
-It’s ideal for data analysts seeking to strengthen their SQL and problem-solving skills in a retail context.
+This project provides a comprehensive walkthrough of data analysis using SQL, covering database setup, cleaning, EDA, and actionable business insights. It is especially useful for beginners aiming to build a strong foundation in SQL for data analytics.
 
 👨‍💻 Author
 Kishan Kunwar
+Aspiring Data Analyst passionate about solving real-world problems through data.
