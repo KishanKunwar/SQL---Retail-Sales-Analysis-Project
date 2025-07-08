@@ -49,53 +49,52 @@ DELETE FROM retail_sales
 WHERE sale_date IS NULL OR sale_time IS NULL OR customer_id IS NULL OR 
       gender IS NULL OR age IS NULL OR category IS NULL OR 
       quantity IS NULL OR price_per_unit IS NULL OR cogs IS NULL;
+
+      
 📊 Business Analysis Queries
+
+
 1. Sales on a Specific Date
-sql
-Copy
-Edit
+
 SELECT * FROM retail_sales
 WHERE sale_date = '2022-11-05';
+
+
 2. Clothing Sales with Quantity ≥ 4 (Nov 2022)
-sql
-Copy
-Edit
+
 SELECT * FROM retail_sales
 WHERE category = 'Clothing'
   AND TO_CHAR(sale_date, 'YYYY-MM') = '2022-11'
   AND quantity >= 4;
+
+  
 3. Total Sales by Category
-sql
-Copy
-Edit
 SELECT category, SUM(total_sale) AS net_sale, COUNT(*) AS total_orders
 FROM retail_sales
 GROUP BY category;
-4. Average Age (Beauty Category)
-sql
-Copy
-Edit
+
+
+5. Average Age (Beauty Category)
 SELECT ROUND(AVG(age), 2) AS avg_age
 FROM retail_sales
 WHERE category = 'Beauty';
-5. High-Value Transactions (> $1000)
-sql
-Copy
-Edit
+
+
+7. High-Value Transactions (> $1000)
 SELECT * FROM retail_sales
 WHERE total_sale > 1000;
-6. Transactions by Gender & Category
-sql
-Copy
-Edit
+
+
+9. Transactions by Gender & Category
+
 SELECT category, gender, COUNT(*) AS total_trans
 FROM retail_sales
 GROUP BY category, gender
 ORDER BY category;
-7. Best-Selling Month Each Year
-sql
-Copy
-Edit
+
+
+10. Best-Selling Month Each Year
+
 SELECT year, month, avg_sale
 FROM (
   SELECT 
@@ -108,26 +107,25 @@ FROM (
   GROUP BY 1, 2
 ) t
 WHERE rank = 1;
-8. Top 5 Customers by Total Sales
-sql
-Copy
-Edit
+
+
+11. Top 5 Customers by Total Sales
+
 SELECT customer_id, SUM(total_sale) AS total_sales
 FROM retail_sales
 GROUP BY customer_id
 ORDER BY total_sales DESC
 LIMIT 5;
-9. Unique Customers per Category
-sql
-Copy
-Edit
+
+
+12. Unique Customers per Category
+
 SELECT category, COUNT(DISTINCT customer_id) AS cnt_unique_cs
 FROM retail_sales
 GROUP BY category;
-10. Shift-Based Order Count
-sql
-Copy
-Edit
+
+
+13. Shift-Based Order Count
 WITH hourly_sale AS (
   SELECT *,
     CASE
@@ -140,6 +138,9 @@ WITH hourly_sale AS (
 SELECT shift, COUNT(*) AS total_orders
 FROM hourly_sale
 GROUP BY shift;
+
+
+
 📈 Key Findings
 Customer Demographics: Customers span a wide age range, and the gender split is fairly balanced.
 
